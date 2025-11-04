@@ -1,0 +1,202 @@
+/* public/css/style.css */
+
+body {
+    font-family: sans-serif;
+    margin: 0;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 20px auto;
+}
+
+/* Header */
+.header {
+    grid-column: 2 / 3;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.logo {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #007bff;
+}
+
+#btn-registrar-leitura {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+/* Sidebar */
+.sidebar {
+    grid-column: 1 / 2;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    height: fit-content;
+}
+
+.user-profile img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    background-color: #eee; /* Placeholder */
+}
+
+.stats-box {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat span {
+    display: block;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.filters-box select, .filters-box button {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#apply-filters-btn {
+    background-color: #28a745;
+    color: white;
+    cursor: pointer;
+}
+
+/* Main Content */
+.main-content h2 {
+    margin-top: 0;
+}
+
+/* Form Card */
+.form-card {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.form-row input, .form-row select {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    min-height: 100px;
+    margin-bottom: 20px;
+    resize: vertical;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.form-actions button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.primary-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Livro Grid */
+.livro-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.livro-card {
+    background-color: white;
+    padding: 15px;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+
+.livro-capa {
+    width: 100%;
+    height: 250px;
+    background-color: #eee;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8em;
+    color: #666;
+    overflow: hidden;
+}
+
+.livro-card h4 {
+    margin: 5px 0;
+    font-size: 1.1em;
+}
+
+.livro-card small {
+    display: block;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.livro-info {
+    font-size: 0.9em;
+    color: #333;
+}
+
+.nota-estrelas {
+    color: gold;
+    font-size: 1.2em;
+}
+
+.hidden {
+    display: none;
+}

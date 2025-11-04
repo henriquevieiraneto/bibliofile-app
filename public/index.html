@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BiblioFile - Meu Diário de Leitura</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <span class="logo">BiblioFile</span>
+            <button id="btn-registrar-leitura">
+                + Registrar Leitura
+            </button>
+        </header>
+
+        <aside class="sidebar">
+            <div class="user-profile">
+                <img src="/imagens/user.png" alt="Maria Silva">
+                <h3>Maria Silva</h3>
+                <p>Leitora Ávida</p>
+            </div>
+            
+            <div class="stats-box">
+                <div class="stat">
+                    <span id="total-livros">0</span>
+                    <small>Livros Lidos</small>
+                </div>
+                <div class="stat">
+                    <span id="media-notas">0.0</span>
+                    <small>Média de Notas</small>
+                </div>
+            </div>
+
+            <div class="filters-box">
+                <h4>Filtros</h4>
+                <div class="filter-group">
+                    <label for="filter-genero">Gênero</label>
+                    <select id="filter-genero">
+                        <option>Todos os gêneros</option>
+                        <option>Fantasia</option>
+                        <option>Ficção Científica</option>
+                        <option>Romance</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filter-nota">Nota</label>
+                    <select id="filter-nota">
+                        <option>Todas as notas</option>
+                        <option value="5">5 estrelas</option>
+                        <option value="4">4+ estrelas</option>
+                        <option value="3">3+ estrelas</option>
+                    </select>
+                </div>
+                <button id="apply-filters-btn">Aplicar Filtros</button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <h2>Meu Diário de Leitura</h2>
+
+            <section id="registro-form-section" class="form-card hidden">
+                <h3>Registre sua Leitura</h3>
+                <form id="registro-leitura-form">
+                    <div class="form-row">
+                        <input type="text" id="titulo" name="titulo" placeholder="Título do Livro" required>
+                        <input type="text" id="autor" name="autor" placeholder="Nome do autor" required>
+                    </div>
+                    <div class="form-row">
+                        <select id="genero" name="genero" required>
+                            <option value="">Selecione o gênero</option>
+                            <option value="Fantasia">Fantasia</option>
+                            <option value="Ficção Científica">Ficção Científica</option>
+                            <option value="Romance">Romance</option>
+                        </select>
+                        <input type="number" id="total_paginas" name="total_paginas" placeholder="Total de Páginas (Ex: 350)">
+                    </div>
+                    <div class="form-row">
+                        <input type="number" id="tempo_leitura_horas" name="tempo_leitura_horas" placeholder="Tempo de Leitura (horas)" step="0.1">
+                        <select id="nota" name="nota" required>
+                            <option value="">Selecione uma nota (1-5)</option>
+                            <option value="5.0">5 Estrelas</option>
+                            <option value="4.5">4.5 Estrelas</option>
+                            <option value="4.0">4 Estrelas</option>
+                            <option value="3.5">3.5 Estrelas</option>
+                            <option value="3.0">3 Estrelas</option>
+                            <option value="2.0">2 Estrelas</option>
+                            <option value="1.0">1 Estrela</option>
+                        </select>
+                    </div>
+                    <textarea id="resenha" name="resenha" placeholder="Compartilhe sua opinião sobre o livro..."></textarea>
+                    
+                    <div class="form-actions">
+                        <button type="button" id="cancelar-registro">Cancelar</button>
+                        <button type="submit" class="primary-btn">Registrar Leitura</button>
+                    </div>
+                </form>
+            </section>
+            
+            <section id="lista-leituras" class="livro-grid">
+                </section>
+        </main>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
