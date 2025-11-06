@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - BiblioFile</title>
+    <link rel="stylesheet" href="css/style.css"> 
+    <style>
+        /* Estilos específicos para a página de autenticação, caso não estejam no style.css */
+        .auth-page {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f4f9;
+        }
+        .auth-card {
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .auth-card h2 {
+            margin-bottom: 25px;
+            color: #333;
+        }
+        .auth-card input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; /* Garante que padding e border não aumentem o tamanho total */
+        }
+        .primary-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        .primary-btn:hover {
+            background-color: #0056b3;
+        }
+        .auth-card p {
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body class="auth-page">
+    <div class="auth-card">
+        <h2>Acesse o BiblioFile</h2>
+        <form id="login-form">
+            <input type="email" id="email" name="email" placeholder="Seu E-mail" required>
+            <input type="password" id="senha" name="senha" placeholder="Sua Senha" required>
+            
+            <button type="submit" class="primary-btn">Entrar</button>
+        </form>
+        <p>Ainda não tem conta? <a href="/cadastro.html">Cadastre-se aqui</a></p>
+    </div>
+    <script src="js/auth.js"></script>
+</body>
+</html>

@@ -4,44 +4,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BiblioFile - Meu Diário de Leitura</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css"> 
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <span class="logo">BiblioFile</span>
-            <button id="btn-registrar-leitura">
-                + Registrar Leitura
-            </button>
-        </header>
-
-        <aside class="sidebar">
-            <div class="user-profile">
-                <img src="/imagens/user.png" alt="Maria Silva">
-                <h3>Maria Silva</h3>
-                <p>Leitora Ávida</p>
+    <header class="header-top">
+        <span class="logo">BiblioFile</span>
+        <nav class="header-nav">
+            <a href="/">Dashboard</a>
+            <a href="/meus-livros">Meus Livros</a>
+            <a href="/comunidade">Comunidade</a>
+            <a href="/recomendacoes">Recomendações</a>
+        </nav>
+        <div class="search-bar">
+            <span>&#128269;</span> 
+            <input type="text" id="main-search-input" placeholder="Buscar livros..." aria-label="Buscar livros">
+            <div class="icons">
+                <span>&#128276;</span>
+                <span>&#128100;</span>
             </div>
+        </div>
+    </header>
+
+    <div class="container-grid">
+        
+        <aside class="sidebar">
             
-            <div class="stats-box">
-                <div class="stat">
-                    <span id="total-livros">0</span>
-                    <small>Livros Lidos</small>
+            <div class="user-box">
+                <div class="user-profile">
+                    <img src="/imagens/user.png" alt="Foto do Usuário">
+                    <div>
+                        <h3 id="user-name-profile">Carregando...</h3>
+                        <p>Leitora Ávida</p>
+                    </div>
                 </div>
-                <div class="stat">
-                    <span id="media-notas">0.0</span>
-                    <small>Média de Notas</small>
+                
+                <div class="stats-box">
+                    <div class="stat">
+                        <span id="total-livros">0</span>
+                        <small>Livros Lidos</small>
+                    </div>
+                    <div class="stat">
+                        <span id="media-notas">0.0</span>
+                        <small>Média de Notas</small>
+                    </div>
                 </div>
             </div>
 
             <div class="filters-box">
                 <h4>Filtros</h4>
+                
                 <div class="filter-group">
                     <label for="filter-genero">Gênero</label>
                     <select id="filter-genero">
                         <option>Todos os gêneros</option>
-                        <option>Fantasia</option>
-                        <option>Ficção Científica</option>
-                        <option>Romance</option>
+                        <option value="Aventura">Aventura</option>
+                        <option value="Biografia">Biografia</option>
+                        <option value="Clássico">Clássico</option>
+                        <option value="Conto">Conto</option>
+                        <option value="Crônica">Crônica</option>
+                        <option value="Distopia">Distopia</option>
+                        <option value="Fantasia">Fantasia</option>
+                        <option value="Ficção Científica">Ficção Científica</option>
+                        <option value="Ficção Histórica">Ficção Histórica</option>
+                        <option value="Horror">Horror</option>
+                        <option value="Infantojuvenil">Infantojuvenil</option>
+                        <option value="Não-Ficção">Não-Ficção</option>
+                        <option value="Poesia/Lírico">Poesia/Lírico</option>
+                        <option value="Policial">Policial</option>
+                        <option value="Romance">Romance</option>
+                        <option value="Suspense">Suspense</option>
+                        <option value="Thriller">Thriller</option>
+                        <option value="Young Adult">Young Adult</option>
+                        <option value="Outro">Outro</option>
                     </select>
                 </div>
                 <div class="filter-group">
@@ -51,6 +85,8 @@
                         <option value="5">5 estrelas</option>
                         <option value="4">4+ estrelas</option>
                         <option value="3">3+ estrelas</option>
+                        <option value="2">2+ estrelas</option>
+                        <option value="1">1+ estrela</option>
                     </select>
                 </div>
                 <button id="apply-filters-btn">Aplicar Filtros</button>
@@ -58,42 +94,83 @@
         </aside>
 
         <main class="main-content">
-            <h2>Meu Diário de Leitura</h2>
+            <div class="main-header">
+                <h2>Meu Diário de Leitura</h2>
+                <button id="btn-registrar-leitura" class="primary-btn">+ Registrar Leitura</button>
+            </div>
 
             <section id="registro-form-section" class="form-card hidden">
-                <h3>Registre sua Leitura</h3>
+                <h3 id="form-title">Registre sua Leitura</h3> 
                 <form id="registro-leitura-form">
+                    
+                    <div class="form-row" style="margin-bottom: 25px; border-bottom: 1px dashed #ccc; padding-bottom: 15px;">
+                        <input type="text" id="api-search-input" placeholder="Buscar por Título ou ISBN para preencher auto.">
+                        <button type="button" id="api-search-btn" class="primary-btn" style="width: 180px; flex-grow: 0;">Buscar Livro Online</button>
+                    </div>
+
                     <div class="form-row">
-                        <input type="text" id="titulo" name="titulo" placeholder="Título do Livro" required>
+                        <label for="titulo">Título do Livro</label>
+                        <input type="text" id="titulo" name="titulo" placeholder="Digite o título do livro" required>
+                        <label for="autor">Autor</label>
                         <input type="text" id="autor" name="autor" placeholder="Nome do autor" required>
                     </div>
+                    
                     <div class="form-row">
-                        <select id="genero" name="genero" required>
-                            <option value="">Selecione o gênero</option>
-                            <option value="Fantasia">Fantasia</option>
-                            <option value="Ficção Científica">Ficção Científica</option>
-                            <option value="Romance">Romance</option>
-                        </select>
-                        <input type="number" id="total_paginas" name="total_paginas" placeholder="Total de Páginas (Ex: 350)">
+                        <div>
+                            <label for="genero">Gênero</label>
+                            <select id="genero" name="genero" required>
+                                <option value="">Selecione o gênero</option>
+                                <option value="Aventura">Aventura</option>
+                                <option value="Biografia">Biografia</option>
+                                <option value="Clássico">Clássico</option>
+                                <option value="Conto">Conto</option>
+                                <option value="Crônica">Crônica</option>
+                                <option value="Distopia">Distopia</option>
+                                <option value="Fantasia">Fantasia</option>
+                                <option value="Ficção Científica">Ficção Científica</option>
+                                <option value="Ficção Histórica">Ficção Histórica</option>
+                                <option value="Horror">Horror</option>
+                                <option value="Infantojuvenil">Infantojuvenil</option>
+                                <option value="Não-Ficção">Não-Ficção</option>
+                                <option value="Poesia/Lírico">Poesia/Lírico</option>
+                                <option value="Policial">Policial</option>
+                                <option value="Romance">Romance</option>
+                                <option value="Suspense">Suspense</option>
+                                <option value="Thriller">Thriller</option>
+                                <option value="Young Adult">Young Adult</option>
+                                <option value="Outro">Outro</option>
+                            </select>
+                        </div>
+                         <div>
+                            <label for="total_paginas">Total de Páginas</label>
+                            <input type="number" id="total_paginas" name="total_paginas" placeholder="Ex: 350">
+                        </div>
                     </div>
                     <div class="form-row">
-                        <input type="number" id="tempo_leitura_horas" name="tempo_leitura_horas" placeholder="Tempo de Leitura (horas)" step="0.1">
-                        <select id="nota" name="nota" required>
-                            <option value="">Selecione uma nota (1-5)</option>
-                            <option value="5.0">5 Estrelas</option>
-                            <option value="4.5">4.5 Estrelas</option>
-                            <option value="4.0">4 Estrelas</option>
-                            <option value="3.5">3.5 Estrelas</option>
-                            <option value="3.0">3 Estrelas</option>
-                            <option value="2.0">2 Estrelas</option>
-                            <option value="1.0">1 Estrela</option>
-                        </select>
+                        <div>
+                            <label for="tempo_leitura">Tempo de Leitura (horas)</label>
+                            <input type="number" id="tempo_leitura" name="tempo_leitura_horas" placeholder="Ex: 15" step="0.1">
+                        </div>
+                         <div>
+                            <label for="nota">Sua Nota (1-5)</label>
+                            <select id="nota" name="nota" required>
+                                <option value="">Selecione uma nota</option>
+                                <option value="5.0">5.0 Estrelas</option>
+                                <option value="4.5">4.5 Estrelas</option>
+                                <option value="4.0">4.0 Estrelas</option>
+                                <option value="3.5">3.5 Estrelas</option>
+                                <option value="3.0">3.0 Estrelas</option>
+                                <option value="2.0">2.0 Estrelas</option>
+                                <option value="1.0">1.0 Estrela</option>
+                            </select>
+                        </div>
                     </div>
+                    <label for="resenha">Resenha (opcional)</label>
                     <textarea id="resenha" name="resenha" placeholder="Compartilhe sua opinião sobre o livro..."></textarea>
                     
                     <div class="form-actions">
                         <button type="button" id="cancelar-registro">Cancelar</button>
-                        <button type="submit" class="primary-btn">Registrar Leitura</button>
+                        <button type="submit" id="salvar-leitura-btn" class="primary-btn">Registrar Leitura</button> 
                     </div>
                 </form>
             </section>

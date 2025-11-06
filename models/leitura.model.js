@@ -3,17 +3,23 @@
 const db = require('../config/db.config');
 
 const Leitura = {
-    // Insere um novo registro de leitura
+    /**
+     * Insere um novo registro de leitura.
+     */
     create: async (data) => {
-        const result = await db.query(
+        // Query de INSERT (CREATE)
+        const [result] = await db.query(
             'INSERT INTO Leitura (id_usuario, id_livro, tempo_leitura_horas, nota, resenha, data_fim) VALUES (?, ?, ?, ?, ?, ?)',
             [data.id_usuario, data.id_livro, data.tempo_leitura_horas, data.nota, data.resenha, data.data_fim]
         );
-        return result[0].insertId;
+        return result.insertId;
     },
 
-    // Obtém estatísticas do usuário
+    /**
+     * Obtém estatísticas do usuário (total de livros e média de notas).
+     */
     getStats: async (id_usuario) => {
+        // Query para obter o COUNT e a média (READ)
         const [rows] = await db.query(
             `SELECT 
                 COUNT(id_leitura) AS total_livros_lidos, 
@@ -22,15 +28,19 @@ const Leitura = {
             WHERE id_usuario = ?`,
             [id_usuario]
         );
-        // Formata a média para ter uma casa decimal, como no exemplo (4.2)
+        // Formata a média para uma casa decimal
         rows[0].media_notas = parseFloat(rows[0].media_notas).toFixed(1);
         return rows[0];
     },
 
-    // Obtém lista de leituras com ou sem filtros
+    /**
+     * Obtém lista de leituras com ou sem filtros.
+     * Utiliza JOIN para trazer os dados do Livro.
+     */
     getFiltered: async (id_usuario, genero, nota) => {
+        // Query base para listar leituras (READ)
         let query = `
-            SELECT L.titulo, L.autor, L.genero, L.total_paginas, L.capa_url, R.nota, R.resenha
+            SELECT R.id_leitura, L.titulo, L.autor, L.genero, L.total_paginas, L.capa_url, R.nota, R.resenha, R.tempo_leitura_horas
             FROM Leitura R
             JOIN Livro L ON R.id_livro = L.id_livro
             WHERE R.id_usuario = ?
@@ -51,6 +61,35 @@ const Leitura = {
         
         const [rows] = await db.query(query, params);
         return rows;
+    },
+
+    /**
+     * Atualiza um registro de leitura existente. (UPDATE)
+     * A atualização é baseada no ID da leitura E no ID do usuário para segurança.
+     */
+    update: async (id_leitura, id_usuario, data) => {
+        const [result] = await db.query(
+            `UPDATE Leitura 
+             SET nota = ?, 
+                 resenha = ?, 
+                 tempo_leitura_horas = ?,
+                 data_fim = ?
+             WHERE id_leitura = ? AND id_usuario = ?`,
+            [data.nota, data.resenha, data.tempo_leitura_horas, data.data_fim, id_leitura, id_usuario]
+        );
+        return result.affectedRows; // Retorna o número de linhas afetadas (0 ou 1)
+    },
+
+    /**
+     * Remove um registro de leitura. (DELETE)
+     * A exclusão é baseada no ID da leitura E no ID do usuário para segurança.
+     */
+    remove: async (id_leitura, id_usuario) => {
+        const [result] = await db.query(
+            'DELETE FROM Leitura WHERE id_leitura = ? AND id_usuario = ?',
+            [id_leitura, id_usuario]
+        );
+        return result.affectedRows;
     }
 };
 
