@@ -7,7 +7,6 @@ const Leitura = {
      * Insere um novo registro de leitura.
      */
     create: async (data) => {
-        // Query de INSERT (CREATE)
         const [result] = await db.query(
             'INSERT INTO Leitura (id_usuario, id_livro, tempo_leitura_horas, nota, resenha, data_fim) VALUES (?, ?, ?, ?, ?, ?)',
             [data.id_usuario, data.id_livro, data.tempo_leitura_horas, data.nota, data.resenha, data.data_fim]
@@ -19,7 +18,6 @@ const Leitura = {
      * Obtém estatísticas do usuário (total de livros e média de notas).
      */
     getStats: async (id_usuario) => {
-        // Query para obter o COUNT e a média (READ)
         const [rows] = await db.query(
             `SELECT 
                 COUNT(id_leitura) AS total_livros_lidos, 
@@ -38,7 +36,6 @@ const Leitura = {
      * Utiliza JOIN para trazer os dados do Livro.
      */
     getFiltered: async (id_usuario, genero, nota) => {
-        // Query base para listar leituras (READ)
         let query = `
             SELECT R.id_leitura, L.titulo, L.autor, L.genero, L.total_paginas, L.capa_url, R.nota, R.resenha, R.tempo_leitura_horas
             FROM Leitura R
@@ -77,7 +74,7 @@ const Leitura = {
              WHERE id_leitura = ? AND id_usuario = ?`,
             [data.nota, data.resenha, data.tempo_leitura_horas, data.data_fim, id_leitura, id_usuario]
         );
-        return result.affectedRows; // Retorna o número de linhas afetadas (0 ou 1)
+        return result.affectedRows;
     },
 
     /**

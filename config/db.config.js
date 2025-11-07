@@ -1,12 +1,12 @@
-// config/db.config.js (Substitua as credenciais de exemplo pelas suas)
+// config/db.config.js
 
 const mysql = require('mysql2');
 
-// Configurações do MySQL (AQUI VOCÊ DEVE TER SEUS VALORES REAIS)
+// Configurações do MySQL (SUBSTITUA PELAS SUAS CREDENCIAIS REAIS)
 const dbConfig = {
     host: 'localhost',      
-    user: 'root',           // << Insira seu usuário real
-    password: 'senai',  // << Insira sua senha real
+    user: 'root',           // << Seu usuário
+    password: 'senai',  // << Sua senha
     database: 'bibliofile_db',
     waitForConnections: true,
     connectionLimit: 10,
@@ -19,13 +19,14 @@ const pool = mysql.createPool(dbConfig);
 // Testa a conexão ao iniciar o servidor
 pool.getConnection((err, connection) => {
     if (err) {
-        // MUITO IMPORTANTE: Garanta que o serviço MySQL (xampp, wamp, etc.) está rodando.
-        console.error('ERRO CRÍTICO: Falha ao conectar ao banco de dados. Verifique suas credenciais e se o MySQL está ativo.', err.stack);
-        throw err; // Força a interrupção para evitar mais erros 500
+        // MUITO IMPORTANTE: Se esta falha ocorrer, o servidor MySQL não está ativo
+        console.error('ERRO CRÍTICO: Falha ao conectar ao banco de dados. Verifique suas credenciais e se o serviço MySQL está rodando.', err.stack);
+        throw err; 
     } else {
         console.log('Conexão MySQL estabelecida com sucesso! ID:', connection.threadId);
         connection.release(); 
     }
 });
 
+// Exporta o pool com suporte a Promessas para async/await
 module.exports = pool.promise();
