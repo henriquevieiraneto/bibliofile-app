@@ -21,10 +21,10 @@ const searchInput = document.getElementById('main-search-input');
 // Campos do Formulário
 const formTitle = document.getElementById('form-title');
 const apiSearchInput = document.getElementById('api-search-input');
-const apiSearchBtn = document.getElementById('api-search-btn');
+const apiSearchBtn = document.getElementById('api-search-btn'); 
 const inputTitulo = document.getElementById('titulo');
 const inputAutor = document.getElementById('autor');
-const inputGenero = document.getElementById('genero');
+const inputGenero = document.getElementById('genero'); // Agora é input text
 const inputTotalPaginas = document.getElementById('total_paginas');
 const inputTempoLeitura = document.getElementById('tempo_leitura');
 const inputNota = document.getElementById('nota');
@@ -35,6 +35,7 @@ let lastCapaUrl = null;
 let allLeiturasData = [];
 let editingLeituraId = null;
 let cardListenersAttached = false; 
+
 
 // ----------------------------------------------------
 // UTILITÁRIOS E RENDERIZAÇÃO
@@ -54,10 +55,6 @@ function handleLogout() {
     window.location.href = '/login.html';
 }
 
-/**
- * Função CRÍTICA: Controla a visibilidade e o estado do formulário.
- * (Reposicionada para o topo para evitar ReferenceError)
- */
 function toggleRegistroForm(show) {
     if (show) {
         if (registroFormSection) registroFormSection.classList.remove('hidden');
@@ -122,7 +119,7 @@ function renderLeituras(leituras) {
 }
 
 // ----------------------------------------------------
-// EVENTOS DOS CARDS
+// EVENTOS DOS CARDS E AÇÕES CRUD
 // ----------------------------------------------------
 
 function setupCardEventListeners() {
@@ -143,10 +140,6 @@ function setupCardEventListeners() {
         }
     };
 }
-
-// ----------------------------------------------------
-// AÇÕES CRUD
-// ----------------------------------------------------
 
 async function handleDelete(id) {
     if (!confirm("Tem certeza que deseja excluir esta leitura?")) return;
@@ -181,7 +174,7 @@ function handleEdit(id) {
     // Preenchimento dos campos do formulário
     inputTitulo.value = leitura.titulo || '';
     inputAutor.value = leitura.autor || '';
-    inputGenero.value = leitura.genero || '';
+    inputGenero.value = leitura.genero || ''; // Campo de texto
     inputTotalPaginas.value = leitura.total_paginas || '';
     inputTempoLeitura.value = leitura.tempo_leitura_horas || '';
     inputNota.value = leitura.nota || '';
@@ -194,7 +187,7 @@ function handleEdit(id) {
 }
 
 // ----------------------------------------------------
-// DASHBOARD
+// DASHBOARD E FILTROS
 // ----------------------------------------------------
 
 async function loadDashboard() {
@@ -208,7 +201,7 @@ async function loadDashboard() {
 
         if (!response.ok) {
             if (response.status === 401) return handleLogout();
-            throw new Error(`Erro do servidor: ${response.status}`);
+            throw new Error(`Erro: ${response.status}`);
         }
 
         const data = await response.json();
@@ -225,10 +218,6 @@ async function loadDashboard() {
         if (listaLeituras) listaLeituras.innerHTML = `<p style="color:red;">Erro ao carregar: ${error.message}. Verifique o terminal Node.js.</p>`;
     }
 }
-
-// ----------------------------------------------------
-// FILTROS
-// ----------------------------------------------------
 
 async function applyAllFilters() {
     const termoBusca = searchInput.value.trim().toLowerCase();
@@ -264,7 +253,7 @@ async function applyAllFilters() {
 }
 
 // ----------------------------------------------------
-// GOOGLE BOOKS API
+// GOOGLE BOOKS API (Busca e Preenchimento Automático)
 // ----------------------------------------------------
 
 async function searchBookAndFillForm(query) {
@@ -287,9 +276,16 @@ async function searchBookAndFillForm(query) {
         }
 
         const volume = data.items[0].volumeInfo;
+        
+        // Extrai a primeira categoria ou 'Geral' se não houver
+        const genero = volume.categories?.length ? volume.categories[0] : '';
+        
+        // Preenche apenas se vazio
         inputTitulo.value ||= volume.title || '';
         inputAutor.value ||= (volume.authors?.join(', ') || '');
         inputTotalPaginas.value ||= volume.pageCount || '';
+        inputGenero.value ||= genero; // Preenche o novo campo de texto do Gênero
+
         lastCapaUrl = volume.imageLinks?.thumbnail?.replace('http:', 'https:') || null;
 
         alert(`Livro "${volume.title}" encontrado!`);
@@ -303,7 +299,7 @@ async function searchBookAndFillForm(query) {
 }
 
 // ----------------------------------------------------
-// EVENTOS GLOBAIS
+// EVENTOS GLOBAIS E SUBMISSÃO
 // ----------------------------------------------------
 
 function setupGlobalEventListeners() {
@@ -311,7 +307,7 @@ function setupGlobalEventListeners() {
     if (applyFiltersBtn) applyFiltersBtn.addEventListener('click', applyAllFilters);
 
     if (btnRegistrarLeitura) btnRegistrarLeitura.addEventListener('click', () => toggleRegistroForm(true));
-    if (btnCancelarRegistro) btnCancelarRegistro.addEventListener('click', () => toggleRegistroForm(false)); // <-- CORRIGIDO AQUI
+    if (btnCancelarRegistro) btnCancelarRegistro.addEventListener('click', () => toggleRegistroForm(false)); // Listener corrigido
 
     if (inputTitulo) {
         inputTitulo.addEventListener('blur', () => {
@@ -336,9 +332,10 @@ function setupGlobalEventListeners() {
             // CRÍTICO: Conversão de strings vazias/números para tipagem correta no DB
             const formData = {
                 ...rawFormData,
+                // Converte para INT/FLOAT ou NULL se a string for vazia (para colunas opcionais)
                 total_paginas: rawFormData.total_paginas ? parseInt(rawFormData.total_paginas) : null,
                 tempo_leitura_horas: rawFormData.tempo_leitura_horas ? parseFloat(rawFormData.tempo_leitura_horas) : null,
-                nota: parseFloat(rawFormData.nota), // 'nota' deve ser sempre preenchido via HTML
+                nota: parseFloat(rawFormData.nota),
                 resenha: rawFormData.resenha || null,
                 capa_url: lastCapaUrl
             };
